@@ -15,7 +15,7 @@ struct sockaddr_in6 host_addr;
 int main()  
 {  
     //Create socket  
-    host_sockfd = socket(PF_INET, SOCK_STREAM, 0);  
+    host_sockfd = socket(AF_INET6, SOCK_STREAM, 0);  
   
     //Initialize sockaddr struct to bind socket using it  
     host_addr.sin6_family = AF_INET6;  
