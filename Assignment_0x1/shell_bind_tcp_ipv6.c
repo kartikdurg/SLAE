@@ -3,6 +3,8 @@
 #include <sys/socket.h>  
 #include <netinet/in.h>  
   
+int i;
+
 // sockfd for host 
 int host_sockfd;    
 
@@ -14,10 +16,10 @@ struct sockaddr_in6 host_addr;
   
 int main()  
 {  
-    //Create socket  
-    host_sockfd = socket(AF_INET6, SOCK_STREAM, 0);  
+    //Create a socket  
+    host_sockfd = socket(AF_INET6, SOCK_STREAM, IPPROTO_TCP);  
   
-    //Initialize sockaddr struct to bind socket using it  
+    //Initialize sockaddr struct for bind socket
     host_addr.sin6_family = AF_INET6;  
     host_addr.sin6_port = htons(4444);  
     host_addr.sin6_addr = in6addr_any; 
