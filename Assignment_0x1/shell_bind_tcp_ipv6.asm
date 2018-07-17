@@ -27,7 +27,7 @@ xor eax,eax
  
 ;int socketcall(int call, unsigned long *args);
 ;int bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
-push DWORD eax   ;x4 dword ipv6 loopback 
+push DWORD eax   ;x4 dword ipv6 loopback | EAX contains 0
 push DWORD eax
 push DWORD eax
 push DWORD eax
