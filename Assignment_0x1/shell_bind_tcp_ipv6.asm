@@ -77,7 +77,7 @@ pop ecx			 ;ECX = 2
 ;dup2() to redirect stdin(0), stdout(1) and stderr(2)
 loop:
     push byte 0x3f ;dup2()
-    pop eax		 ;ECX = 0x3f
+    pop eax		 ;EAX = 0x3f
     int 0x80     ;exec sys_dup2
     dec ecx      ;decrement counter
     jns loop     ;SF not set? then keep on jumping
