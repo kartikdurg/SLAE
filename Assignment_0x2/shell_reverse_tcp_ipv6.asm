@@ -4,8 +4,7 @@ section .text
 ;References:
 ;(1)http://syscalls.kernelgrok.com/
 ;(2)https://www.3dbrew.org/wiki/Socket_Services
-;(3)http://osr600doc.xinuos.com/en/SDK_netapi/sockC.TheIPv6sockaddrstructure.html
-;(4)http://www.qnx.com/developers/docs/6.5.0/index.jsp?topic=%2Fcom.qnx.doc.neutrino_lib_ref%2Fi%2Finet6_proto.html
+;(3)https://www.ibm.com/support/knowledgecenter/en/ssw_ibm_i_71/rzab6/cafinet6.htm
 
 _start:
 ;IPV6 socket creation 
