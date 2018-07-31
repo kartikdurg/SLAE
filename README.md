@@ -1,9 +1,9 @@
 # SLAE
 SecurityTube Linux Assembly Expert/x86
 
-Usage: BIND_REVERSE_SHELL.py
+# Usage: BIND_REVERSE_SHELL.py
 
-==>python BIND_REVERSE_SHELL.py
+$ python BIND_REVERSE_SHELL.py
 
 Output:
 Enter the IP to connect-back: 127.1.1.1 \\Your IP
