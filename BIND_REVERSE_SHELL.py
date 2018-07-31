@@ -17,7 +17,7 @@ def convert_ip(ip):
 def convert_port(port):
 	port1 = hex(port)
 	port2 = str("\\x"+port1[2:4]+"\\x"+port1[4:6])
-	print "PORT "+str(port)+" has been converted to "+"\\x"+port1[2:4]+"\\x"+port1[4:6]+"\\n"
+	print "PORT "+str(port)+" has been converted to "+"\\x"+port1[2:4]+"\\x"+port1[4:6]+"\n\n"
 	
 	return port2
 
