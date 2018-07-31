@@ -7,7 +7,7 @@ def convert_ip(ip):
 	ip1 = ''.join([hex(int(x)+256)[3:] for x in ip.split('.')])
 	endian = int(ip1,16)
 	
-	print "HEX: "+"0x"+ip1
+	print "\nHEX: "+"0x"+ip1
 	
 	ip2 = "\\x"+ip1[6:8]+"\\x"+ip1[4:6]+"\\x"+ip1[2:4]+"\\x"+ip1[:2]
 	print ip+" has been converted to little-endian"+ip2
@@ -17,7 +17,7 @@ def convert_ip(ip):
 def convert_port(port):
 	port1 = hex(port)
 	port2 = str("\\x"+port1[2:4]+"\\x"+port1[4:6])
-	print "PORT "+str(port)+" has been converted to "+"\\x"+port1[2:4]+"\\x"+port1[4:6]
+	print "PORT "+str(port)+" has been converted to "+"\\x"+port1[2:4]+"\\x"+port1[4:6]+"\\n"
 	
 	return port2
 
